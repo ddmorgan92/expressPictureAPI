@@ -4,14 +4,14 @@ const PORT = 8080;
 
 app.use( express.json() )
 
-app.get('/tshirt', (req, res) => {
+app.get('/pic', (req, res) => {
     res.status(200).send({
-        tshirt: 'large',
-        color: 'blue',
+        status: `ONLINE`,
+        options: `NONE`,
     })
 });
 
-app.post('/tshirt/:id', (req, res) => {
+app.post('/pic/:id', (req, res) => {
 
     const { id } = req.params;
     const { logo } = req.body;
@@ -29,4 +29,3 @@ app.listen(
     PORT,
     () => console.log(`it's alive on http://localhost:${PORT}`)
 )
-
