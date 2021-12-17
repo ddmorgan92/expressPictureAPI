@@ -2,7 +2,6 @@
 <html>
 
 <head>
-    <!--<script src="index.js" async></script>-->
     <style>
         ul {
             list-style: none;
@@ -11,9 +10,9 @@
 </head>
 
 <body>
-    <form action="http://localhost:8080/pic/grayscale" method="POST">
+    <form>
         <input type="file" id="inputFileToLoad" accept="image/*" onchange="handleFiles();">
-        <input type="text" id="base64container" name="base64"></input>
+        <input type="text" id="base64" name="base64"></input>
         <div id="imgUpload"></div>
     <button type="submit">Send to API</button>
 </form>
@@ -36,35 +35,35 @@
                     newImage.src = srcData;
 
                     document.getElementById("imgUpload").innerHTML = newImage.outerHTML;
-                    console.log("base64String is: " + base64String);
-                    document.getElementById("base64container").value = base64String;
+                    console.log("base64 is: " + base64String);
+                    document.getElementById("base64").value = base64String;
 
                 }
                 fileReader.readAsDataURL(fileToLoad);
             }
         }
 
-        // function sendPost(){
-        //     var url = "http://localhost:8080/pic/grayscale";
+        function handleSubmit(event) {
+            event.preventDefault();
 
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.open("POST", url);
+            const data = new FormData(event.target);
 
-        //     // xhr.setRequestHeader("Accept", "application/json");
-        //     // xhr.setRequestHeader("Content-Type", "application/json");
+            const base64 = data.get('base64');
 
-        //     xhr.onreadystatechange = function () {
-        //     if (xhr.readyState === 4) {
-        //         console.log(xhr.status);
-        //         console.log(xhr.responseText);
-        //     }};
+            let jsonData = {"base64": `${base64}`};
 
-        //     var data = `{
-        //     "base64": "${base64String}"
-        //     }`;
+            //CORS error will appear, don't understand how to fix atm
+            //Use Moesif CORS chrome extension for now as a workaround
+            //Need to do more research
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", 'http://localhost:8080/pic/grayscale', true);
+            xhr.setRequestHeader("Content-Type", "application/json", "charset=UTF-8");
+            console.log(jsonData);
+            xhr.send(JSON.stringify(jsonData));
+        }
 
-        //     xhr.send(data);
-        // }
+        const form = document.querySelector('form');
+        form.addEventListener('submit', handleSubmit);
     </script>
 
 </body>
