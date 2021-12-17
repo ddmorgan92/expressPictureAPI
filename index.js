@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const app = express();
 const PORT = 8080;
@@ -11,7 +12,33 @@ app.get('/pic', (req, res) => {
     })
 });
 
-app.post('/pic/:id', (req, res) => {
+
+app.post('/pic/grayscale', (req, res) => {
+
+    const { base64 } = req.body;
+
+    if (!base64) {
+        //res.status(418).send({ message: 'Needs image data!' })
+        res.status(418).send(console.log(req.body));
+    }
+
+    //TO DO
+    const base64Decode = Buffer.from(base64.substring(23), "base64");
+    console.log(base64Decode);
+
+    fs.writeFile('image.jpg', base64Decode, {encoding: 'base64'}, function(err) {
+        console.log('File created');
+    });
+
+    res.send("Success!... Or is it?")
+});
+
+app.listen(
+    PORT,
+    () => console.log(`it's alive on http://localhost:${PORT}`)
+)
+
+/*app.post('/pic/:id', (req, res) => {
 
     const { id } = req.params;
     const { logo } = req.body;
@@ -23,9 +50,4 @@ app.post('/pic/:id', (req, res) => {
     res.send({
         tshirt: `👕 with your ${logo} and ID of ${id}`,
     })
-});
-
-app.listen(
-    PORT,
-    () => console.log(`it's alive on http://localhost:${PORT}`)
-)
+}); */
