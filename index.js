@@ -3,14 +3,14 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 
-app.use( express.json() )
+app.use( express.json({limit: '50mb'}) )
 
-app.get('/pic', (req, res) => {
+/*app.get('/pic', (req, res) => {
     res.status(200).send({
         status: `ONLINE`,
         options: `NONE`,
     })
-});
+});*/
 
 
 app.post('/pic/grayscale', (req, res) => {
@@ -18,8 +18,7 @@ app.post('/pic/grayscale', (req, res) => {
     const { base64 } = req.body;
 
     if (!base64) {
-        //res.status(418).send({ message: 'Needs image data!' })
-        res.status(418).send(console.log(req.body));
+        res.status(418).send({ message: 'Needs image data!' })
     }
 
     //TO DO
@@ -30,7 +29,7 @@ app.post('/pic/grayscale', (req, res) => {
         console.log('File created');
     });
 
-    res.send("Success!... Or is it?")
+    res.send(req);
 });
 
 app.listen(
