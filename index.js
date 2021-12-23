@@ -1,16 +1,20 @@
 const fs = require('fs');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = 8080;
 
-app.use( express.json({limit: '50mb'}) )
+app.use( express.json({limit: '50mb'}) );
+app.use( cors() );
 
-/*app.get('/pic', (req, res) => {
+/* TODO
+app.get('/pic', (req, res) => {
     res.status(200).send({
         status: `ONLINE`,
         options: `NONE`,
     })
-});*/
+});
+*/
 
 
 app.post('/pic/grayscale', (req, res) => {
@@ -29,24 +33,10 @@ app.post('/pic/grayscale', (req, res) => {
         console.log('File created');
     });
 
-    res.send(req);
+    res.send(console.log("Picture saved successfully"));
 });
 
 app.listen(
     PORT,
     () => console.log(`it's alive on http://localhost:${PORT}`)
 )
-
-/*app.post('/pic/:id', (req, res) => {
-
-    const { id } = req.params;
-    const { logo } = req.body;
-
-    if (!logo) {
-        res.status(418).send({ message: 'Needs a logo!' })
-    }
-
-    res.send({
-        tshirt: `👕 with your ${logo} and ID of ${id}`,
-    })
-}); */
